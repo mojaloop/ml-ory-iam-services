@@ -1,0 +1,96 @@
+{
+  "name": "@mojaloop/ml-ory-iam-services",
+  "version": "0.1.0",
+  "description": "Mojaloop Ory IAM Services - Keto batch auth proxy and Kratos role webhook",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mojaloop/ml-ory-iam-services.git"
+  },
+  "keywords": [
+    "mojaloop",
+    "ory",
+    "keto",
+    "kratos",
+    "iam",
+    "authorization"
+  ],
+  "author": "Mojaloop Foundation",
+  "contributors": [
+    "Yevhen Kyriukha <kirgene@gmail.com>"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/mojaloop/ml-ory-iam-services/issues"
+  },
+  "homepage": "https://github.com/mojaloop/ml-ory-iam-services#readme",
+  "main": "dist/cli.js",
+  "bin": {
+    "ory-services": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22.x"
+  },
+  "scripts": {
+    "prepare": "husky || true",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src test",
+    "lint:fix": "npm run lint -- --fix",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "node dist/cli.js",
+    "start:dev": "ts-node src/cli.ts",
+    "test": "npm run test:unit",
+    "test:unit": "jest --testMatch='**/unit/**/*.test.ts'",
+    "test:xunit": "JEST_JUNIT_OUTPUT_DIR=./test/reports/ JEST_JUNIT_OUTPUT_NAME=xunit.xml npm run test:unit -- --reporters=jest-junit",
+    "test:coverage": "npm run test:unit -- --coverage --coverageThreshold='{}'",
+    "test:coverage-check": "npm run test:unit -- --coverage",
+    "audit:check": "npx audit-ci --config ./audit-ci.jsonc",
+    "dep:check": "npx --no-install ncu -e 2",
+    "dep:update": "npx --no-install ncu -u",
+    "release": "npx standard-version --no-verify --releaseCommitMessageFormat 'ci(release): {{currentTag}} [skip ci]'",
+    "snapshot": "npx standard-version --no-verify --skip.changelog --prerelease snapshot --releaseCommitMessageFormat 'ci(snapshot): {{currentTag}}'"
+  },
+  "dependencies": {
+    "commander": "^14.0.2",
+    "dotenv": "^17.2.3",
+    "env-var": "^7.5.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.0.9",
+    "@eslint/js": "^9.39.2",
+    "typescript-eslint": "^8.53.1",
+    "audit-ci": "^7.1.0",
+    "eslint": "9.39.2",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-import": "2.32.0",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "jest-junit": "^16.0.0",
+    "lint-staged": "^16.2.7",
+    "npm-check-updates": "19.3.1",
+    "prettier": "3.8.0",
+    "standard-version": "^9.5.0",
+    "ts-jest": "29.4.6",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3",
+    "supertest": "^7.2.2",
+    "@types/supertest": "^6.0.3"
+  },
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "replace '\\[mojaloop/#(\\d+)\\]\\(https://github.com/mojaloop/(.*)/issues/(\\d+)\\)' '[mojaloop/#$1](https://github.com/mojaloop/project/issues/$1)' CHANGELOG.md"
+    }
+  },
+  "lint-staged": {
+    "./src/*.ts": [
+      "eslint --fix",
+      "prettier --write --ignore-unknown"
+    ]
+  }
+}
