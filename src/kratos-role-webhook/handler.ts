@@ -10,8 +10,9 @@ interface KetoResponse {
 }
 
 interface KratosIdentity {
+  schema_id: string;
+  state: string;
   traits: Record<string, unknown>;
-  [key: string]: unknown;
 }
 
 interface InjectRolesRequest {
@@ -76,16 +77,25 @@ export async function updateIdentityRoles(
 
     console.log(`User ${userSubject} roles:`, roles);
 
+    const updateBody = {
+      schema_id: identity.schema_id,
+      state: identity.state,
+      traits: { ...identity.traits, roles },
+    };
+
     const response = await fetch(`${config.kratosAdminUrl}/admin/identities/${identityId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...identity,
-        traits: { ...identity.traits, roles },
-      }),
+      body: JSON.stringify(updateBody),
     });
 
-    return response.ok ? { success: true, roles } : { error: 'Update failed' };
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Kratos update failed: ${response.status} - ${errorText}`);
+      return { error: `Update failed: ${response.status}` };
+    }
+
+    return { success: true, roles };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return { error: message };

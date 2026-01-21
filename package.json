@@ -47,6 +47,8 @@
     "test:xunit": "JEST_JUNIT_OUTPUT_DIR=./test/reports/ JEST_JUNIT_OUTPUT_NAME=xunit.xml npm run test:unit -- --reporters=jest-junit",
     "test:coverage": "npm run test:unit -- --coverage --coverageThreshold='{}'",
     "test:coverage-check": "npm run test:unit -- --coverage",
+    "test:integration": "./test/scripts/test-integration.sh",
+    "test:functional": "echo 'No functional tests yet'",
     "audit:check": "npx audit-ci --config ./audit-ci.jsonc",
     "dep:check": "npx --no-install ncu -e 2",
     "dep:update": "npx --no-install ncu -u",

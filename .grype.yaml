@@ -1,0 +1,10 @@
+ignore: []
+
+output:
+  - "table"
+  - "json"
+
+search:
+  scope: "squashed"
+quiet: false
+check-for-app-update: false

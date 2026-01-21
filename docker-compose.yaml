@@ -1,0 +1,56 @@
+services:
+  keto:
+    image: oryd/keto:v25.4.0
+    command: serve -c /etc/keto/config.yaml
+    volumes:
+      - ./docker/keto.yaml:/etc/keto/config.yaml:ro
+    ports:
+      - "4466:4466"
+      - "4467:4467"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:4466/health/ready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  kratos:
+    image: oryd/kratos:v25.4.0
+    command: serve -c /etc/kratos/config.yaml --dev --watch-courier
+    volumes:
+      - ./docker/kratos.yaml:/etc/kratos/config.yaml:ro
+      - ./docker/identity.schema.json:/etc/kratos/identity.schema.json:ro
+    ports:
+      - "4433:4433"
+      - "4434:4434"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:4434/health/ready"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  keto-batch-auth:
+    build: .
+    command: ["keto-batch-auth"]
+    environment:
+      PORT: "3000"
+      KETO_READ_URL: "http://keto:4466"
+    ports:
+      - "3000:3000"
+    depends_on:
+      keto:
+        condition: service_healthy
+
+  kratos-role-webhook:
+    build: .
+    command: ["kratos-role-webhook"]
+    environment:
+      PORT: "8080"
+      KETO_READ_URL: "http://keto:4466"
+      KRATOS_ADMIN_URL: "http://kratos:4434"
+    ports:
+      - "8080:8080"
+    depends_on:
+      keto:
+        condition: service_healthy
+      kratos:
+        condition: service_healthy
