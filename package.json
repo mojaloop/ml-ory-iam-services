@@ -94,5 +94,9 @@
       "eslint --fix",
       "prettier --write --ignore-unknown"
     ]
+  },
+  "overrides": {
+    "glob": "^11.0.0",
+    "tar": "^7.5.6"
   }
 }

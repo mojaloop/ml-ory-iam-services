@@ -1,5 +1,5 @@
 # Arguments
-ARG NODE_VERSION=22-alpine
+ARG NODE_VERSION=22-alpine3.23
 
 # Build stage
 FROM node:${NODE_VERSION} AS builder
