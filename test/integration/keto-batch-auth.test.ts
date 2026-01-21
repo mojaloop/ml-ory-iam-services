@@ -82,3 +82,5 @@ describe('keto-batch-auth integration', () => {
     });
   });
 });
+
+export {};

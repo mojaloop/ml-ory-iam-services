@@ -126,3 +126,5 @@ describe('kratos-role-webhook integration', () => {
     });
   });
 });
+
+export {};
