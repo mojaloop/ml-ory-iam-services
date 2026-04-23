@@ -1,10 +1,10 @@
 {
-  "name": "@mojaloop/ml-ory-iam-services",
+  "name": "@mojaloop/ml-iam-services",
   "version": "0.1.0",
   "description": "Mojaloop Ory IAM Services - Keto batch auth proxy and Kratos role webhook",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mojaloop/ml-ory-iam-services.git"
+    "url": "git+https://github.com/mojaloop/ml-iam-services.git"
   },
   "keywords": [
     "mojaloop",
@@ -20,9 +20,9 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/mojaloop/ml-ory-iam-services/issues"
+    "url": "https://github.com/mojaloop/ml-iam-services/issues"
   },
-  "homepage": "https://github.com/mojaloop/ml-ory-iam-services#readme",
+  "homepage": "https://github.com/mojaloop/ml-iam-services#readme",
   "main": "dist/cli.js",
   "bin": {
     "ory-services": "dist/cli.js"

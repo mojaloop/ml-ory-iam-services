@@ -57,13 +57,13 @@ Webhook service that injects user roles from Keto into Kratos identity traits.
 
 ```bash
 # Build
-docker build -t mojaloop/ml-ory-iam-services .
+docker build -t mojaloop/ml-iam-services .
 
 # Run keto-batch-auth
-docker run -p 3000:3000 mojaloop/ml-ory-iam-services keto-batch-auth
+docker run -p 3000:3000 mojaloop/ml-iam-services keto-batch-auth
 
 # Run kratos-role-webhook
-docker run -p 8080:8080 mojaloop/ml-ory-iam-services kratos-role-webhook
+docker run -p 8080:8080 mojaloop/ml-iam-services kratos-role-webhook
 ```
 
 ## Development
