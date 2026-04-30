@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/ml-iam-services",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Mojaloop Ory IAM Services - Keto batch auth proxy and Kratos role webhook",
   "repository": {
     "type": "git",
