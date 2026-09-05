@@ -31,7 +31,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=22.x"
+    "node": ">=24.x"
   },
   "scripts": {
     "prepare": "husky || true",
@@ -43,10 +43,10 @@
     "start": "node dist/cli.js",
     "start:dev": "ts-node src/cli.ts",
     "test": "npm run test:unit",
-    "test:unit": "jest --testMatch='**/unit/**/*.test.ts'",
-    "test:xunit": "JEST_JUNIT_OUTPUT_DIR=./test/reports/ JEST_JUNIT_OUTPUT_NAME=xunit.xml npm run test:unit -- --reporters=jest-junit",
-    "test:coverage": "npm run test:unit -- --coverage --coverageThreshold='{}'",
-    "test:coverage-check": "npm run test:unit -- --coverage",
+    "test:unit": "vitest run",
+    "test:xunit": "vitest run --reporter=junit --outputFile=./test/reports/xunit.xml",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage-check": "vitest run --coverage",
     "test:integration": "./test/scripts/test-integration.sh",
     "test:functional": "echo 'No functional tests yet'",
     "audit:check": "npx audit-ci --config ./audit-ci.jsonc",
@@ -56,38 +56,51 @@
     "snapshot": "npx commit-and-tag-version --no-verify --skip.changelog --prerelease snapshot --releaseCommitMessageFormat 'ci(snapshot): {{currentTag}}'"
   },
   "dependencies": {
+    "@mojaloop/authz": "^0.9.0",
+    "@ory/client": "^1.22.66",
+    "@scalar/openapi-parser": "^0.28.14",
     "commander": "^14.0.3",
     "dotenv": "^17.4.2",
-    "env-var": "^7.5.0"
+    "env-var": "^7.5.0",
+    "json-ptr": "^3.1.1",
+    "kubernetes-fluent-client": "^3.11.11",
+    "openapi-backend": "^5.20.1",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.5.0",
+    "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
+    "@eslint/js": "^10.0.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
-    "@eslint/js": "^10.0.1",
-    "typescript-eslint": "^8.59.0",
+    "@types/supertest": "^7.2.0",
     "audit-ci": "^7.1.0",
+    "commit-and-tag-version": "^12.7.1",
     "eslint": "10.2.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "husky": "^9.1.7",
     "jest": "^30.3.0",
-    "jest-junit": "^16.0.0",
+    "jest-junit": "^17.0.0",
     "lint-staged": "^16.4.0",
-    "npm-check-updates": "21.0.3",
+    "npm-check-updates": "22.0.1",
     "prettier": "3.8.3",
-    "commit-and-tag-version": "^12.7.1",
+    "supertest": "^7.2.2",
     "ts-jest": "29.4.9",
     "ts-node": "10.9.2",
+    "tsx": "^4.23.12",
     "typescript": "6.0.3",
-    "supertest": "^7.2.2",
-    "@types/supertest": "^7.2.0"
+    "typescript-eslint": "^8.59.1",
+    "vitest": "^4.1.10"
   },
   "lint-staged": {
     "./src/*.ts": [
       "eslint --fix",
       "prettier --write --ignore-unknown"
     ]
+  },
+  "imports": {
+    "#src/*": "./dist/*.js",
+    "#test/*": "./test/*.ts"
   }
 }

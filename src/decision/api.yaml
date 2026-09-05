@@ -1,0 +1,75 @@
+openapi: 3.1.0
+info:
+  title: Mojaloop IAM decision
+  version: 1.0.0
+  description: >-
+    What the gateway asks on every request. It takes the rule's rendered
+    payload, composes the checks behind it, and answers allow or deny along
+    with what the caller may reach, which the gateway forwards to the service.
+
+    Read-only Keto access, no gateway route of its own, and the single audit
+    point: one record per decision either way.
+
+x-authz:
+  service: iamDecision
+
+servers:
+  - url: /
+
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Reports whether the service is running
+      security: []
+      responses:
+        '200':
+          description: The service is running
+
+  /:
+    post:
+      operationId: decide
+      summary: Answers whether one request is allowed, and what it may reach
+      description: >-
+        The payload is what the generated rule renders: the namespace, the
+        checks its path produced, the subject, and the resource types the
+        operation is scoped by. An answer carries the caller's reach in the
+        header the platform's own package reads, and nothing else writes.
+      security: []
+      x-authz:
+        scopedBy: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                namespace:
+                  type: string
+                checks:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      namespace:
+                        type: string
+                      object:
+                        type: string
+                      relation:
+                        type: string
+                      subject_id:
+                        type: string
+                    required: [namespace, object, relation, subject_id]
+                scope:
+                  type: array
+                  items:
+                    type: string
+              required: [namespace, checks]
+      responses:
+        '200':
+          description: The request is allowed
+        '403':
+          description: The request is refused, and the caller reaches nothing
+        '405':
+          description: Only a decision may be asked here

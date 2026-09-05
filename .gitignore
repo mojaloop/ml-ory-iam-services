@@ -35,3 +35,4 @@ dist/
 
 # test reports
 test/reports/
+junit.xml

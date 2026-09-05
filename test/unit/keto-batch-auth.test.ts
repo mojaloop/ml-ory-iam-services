@@ -2,10 +2,10 @@ import { createServer } from 'node:http';
 
 import request from 'supertest';
 
-const mockFetch = jest.fn();
-global.fetch = mockFetch;
+const mockFetch = vi.fn();
+vi.stubGlobal('fetch', mockFetch);
 
-jest.mock('../../src/keto-batch-auth/config', () => ({
+vi.mock('../../src/keto-batch-auth/config', () => ({
   config: {
     port: 3000,
     ketoReadUrl: 'http://keto-read-test',

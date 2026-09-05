@@ -15,16 +15,16 @@ describe('keto-batch-auth integration', () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        namespace: 'role',
+        namespace: 'Role',
         object: 'admin',
-        relation: 'member',
+        relation: 'members',
         subject_id: 'user-1',
       }),
     });
   });
 
   afterAll(async () => {
-    await fetch(`${KETO_WRITE_URL}/admin/relation-tuples?namespace=role&object=admin&relation=member&subject_id=user-1`, {
+    await fetch(`${KETO_WRITE_URL}/admin/relation-tuples?namespace=Role&object=admin&relation=members&subject_id=user-1`, {
       method: 'DELETE',
     });
   });
@@ -46,9 +46,9 @@ describe('keto-batch-auth integration', () => {
         body: JSON.stringify({
           tuples: [
             {
-              namespace: 'role',
+              namespace: 'Role',
               object: 'admin',
-              relation: 'member',
+              relation: 'members',
               subject_id: 'user-1',
             },
           ],
@@ -67,9 +67,9 @@ describe('keto-batch-auth integration', () => {
         body: JSON.stringify({
           tuples: [
             {
-              namespace: 'role',
+              namespace: 'Role',
               object: 'superadmin',
-              relation: 'member',
+              relation: 'members',
               subject_id: 'user-1',
             },
           ],

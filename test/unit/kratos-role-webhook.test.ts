@@ -2,10 +2,10 @@ import { createServer } from 'node:http';
 
 import request from 'supertest';
 
-const mockFetch = jest.fn();
-global.fetch = mockFetch;
+const mockFetch = vi.fn();
+vi.stubGlobal('fetch', mockFetch);
 
-jest.mock('../../src/kratos-role-webhook/config', () => ({
+vi.mock('../../src/kratos-role-webhook/config', () => ({
   config: {
     port: 8080,
     kratosAdminUrl: 'http://kratos-admin-test',
@@ -113,6 +113,35 @@ describe('kratos-role-webhook', () => {
       expect(response.body.success).toBe(true);
       expect(response.body.roles).toContain('admin');
       expect(response.body.roles).toContain('everyone');
+    });
+
+    it('should write roles to metadata_public and leave traits alone', async () => {
+      mockFetch
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () => Promise.resolve({ relation_tuples: [{ object: 'hub-admin' }] }),
+        })
+        .mockResolvedValueOnce({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              schema_id: 'default',
+              state: 'active',
+              traits: { email: 'test@test.com' },
+              metadata_public: { dfspId: 'mtn' },
+            }),
+        })
+        .mockResolvedValueOnce({ ok: true });
+
+      await request(app)
+        .post('/inject-roles')
+        .send({ identity_id: 'identity-123', user_subject: 'user-123' });
+
+      const update = JSON.parse(mockFetch.mock.calls[2][1].body as string);
+      expect(update.metadata_public.roles).toContain('hub-admin');
+      expect(update.metadata_public.dfspId).toBe('mtn');
+      expect(update.traits).toEqual({ email: 'test@test.com' });
+      expect(update.traits.roles).toBeUndefined();
     });
 
     it('should return 404 for unknown endpoints', async () => {

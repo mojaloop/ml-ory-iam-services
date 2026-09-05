@@ -45,9 +45,9 @@ describe('kratos-role-webhook integration', () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        namespace: 'role',
+        namespace: 'Role',
         object: 'admin',
-        relation: 'member',
+        relation: 'members',
         subject_id: userSubject,
       }),
     });
@@ -56,9 +56,9 @@ describe('kratos-role-webhook integration', () => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        namespace: 'role',
+        namespace: 'Role',
         object: 'user',
-        relation: 'member',
+        relation: 'members',
         subject_id: userSubject,
       }),
     });
@@ -71,10 +71,10 @@ describe('kratos-role-webhook integration', () => {
       });
     }
 
-    await fetch(`${KETO_WRITE_URL}/admin/relation-tuples?namespace=role&object=admin&relation=member&subject_id=${userSubject}`, {
+    await fetch(`${KETO_WRITE_URL}/admin/relation-tuples?namespace=Role&object=admin&relation=members&subject_id=${userSubject}`, {
       method: 'DELETE',
     });
-    await fetch(`${KETO_WRITE_URL}/admin/relation-tuples?namespace=role&object=user&relation=member&subject_id=${userSubject}`, {
+    await fetch(`${KETO_WRITE_URL}/admin/relation-tuples?namespace=Role&object=user&relation=members&subject_id=${userSubject}`, {
       method: 'DELETE',
     });
   });

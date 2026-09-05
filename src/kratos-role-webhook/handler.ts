@@ -14,6 +14,7 @@ interface KratosIdentity {
   schema_id: string;
   state: string;
   traits: Record<string, unknown>;
+  metadata_public?: Record<string, unknown>;
 }
 
 interface InjectRolesRequest {
@@ -50,7 +51,7 @@ function sendJson(res: ServerResponse, statusCode: number, data: SuccessResponse
 export async function getUserRoles(userSubject: string): Promise<string[]> {
   try {
     const response = await fetch(
-      `${config.ketoReadUrl}/relation-tuples?subject_id=${userSubject}&namespace=role&relation=member`
+      `${config.ketoReadUrl}/relation-tuples?subject_id=${userSubject}&namespace=Role&relation=members`
     );
     if (!response.ok) return ['everyone'];
 
@@ -78,10 +79,13 @@ export async function updateIdentityRoles(
 
     console.log(`User ${userSubject} roles:`, roles);
 
+    // metadata_public is admin-managed, so a self-service settings flow cannot
+    // reach it, and whoami exposes it to the browser.
     const updateBody = {
       schema_id: identity.schema_id,
       state: identity.state,
-      traits: { ...identity.traits, roles },
+      traits: identity.traits,
+      metadata_public: { ...identity.metadata_public, roles },
     };
 
     const response = await fetch(`${config.kratosAdminUrl}/admin/identities/${identityId}`, {

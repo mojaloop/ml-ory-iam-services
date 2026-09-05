@@ -1,0 +1,47 @@
+{
+  "name": "@mojaloop/authz",
+  "version": "0.9.0",
+  "description": "The authorization contract services speak with the platform",
+  "license": "Apache-2.0",
+  "author": "Mojaloop Foundation",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mojaloop/ml-iam-services.git",
+    "directory": "packages/authz"
+  },
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./gateway": {
+      "types": "./gateway.d.ts",
+      "default": "./gateway.js"
+    },
+    "./document": {
+      "types": "./document.d.ts",
+      "default": "./document.js"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "document.js",
+    "document.d.ts",
+    "header.js",
+    "gateway.js",
+    "gateway.d.ts"
+  ],
+  "engines": {
+    "node": ">=24.x"
+  },
+  "dependencies": {
+    "path-to-regexp": "^8.4.2",
+    "yaml": "^2.9.0"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
